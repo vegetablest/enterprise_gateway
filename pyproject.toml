@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jupyter_enterprise_gateway"
-version = "3.2.2"
+version = "3.2.3"
 description = "A web server for spawning and communicating with remote Jupyter kernels"
 license = { file = "LICENSE.md" }
 keywords = ["Interactive","Interpreter","Kernel", "Web", "Cloud"]

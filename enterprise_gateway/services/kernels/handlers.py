@@ -1,4 +1,5 @@
 """Tornado handlers for kernel CRUD and communication."""
+
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
@@ -144,6 +145,23 @@ class KernelHandler(
         km.check_kernel_id(kernel_id)
         model = km.kernel_model(kernel_id)
         self.finish(json.dumps(model, default=date_default))
+
+    @web.authenticated
+    async def delete(self, kernel_id):
+        """Remove a kernel."""
+        self.kernel_manager.check_kernel_id(kernel_id=kernel_id)
+        await super().delete(kernel_id=kernel_id)
+
+
+class ZMQChannelsHandler(jupyter_server_handlers.ZMQChannelsHandler):
+    """Extends the kernel websocket handler."""
+
+    async def get(self, kernel_id):
+        """Handle a get request for a kernel."""
+        # Synchronize Kernel and check if it exists.
+        self.log.warning("Start get kernel info: %s", self.kernel_id)
+        self.kernel_manager.check_kernel_id(kernel_id=kernel_id)
+        await super().get(kernel_id=kernel_id)
 
 
 default_handlers: list[tuple] = []
